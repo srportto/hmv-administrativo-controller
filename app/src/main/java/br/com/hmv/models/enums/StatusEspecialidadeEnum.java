@@ -11,7 +11,7 @@ public enum StatusEspecialidadeEnum {
         this.codigoStatus = codigoStatus;
     }
 
-    public long getCodigoStatusEspecialidade(){
+    public long getCodigoStatusEspecialidade() {
         return this.codigoStatus;
     }
 
@@ -21,6 +21,6 @@ public enum StatusEspecialidadeEnum {
                 return status;
             }
         }
-        throw new IllegalArgumentException(String.format("Status especialidade %i não conhecido ",codigoStatus));
+        throw new IllegalArgumentException(String.format("Status especialidade %i não conhecido ", codigoStatus));
     }
 }
