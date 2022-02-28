@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tb_endereco")
+@Table(name = "tb_enderecos")
 public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 

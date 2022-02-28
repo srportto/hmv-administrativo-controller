@@ -31,9 +31,9 @@ public class Especialidade implements Serializable {
 	private Long id;
 
 	@Column(nullable = false)
-	private String descricao;
+	private String nome;
 
-	private Long codigoStatusConvenio;
+	private Long codigoStatusEspecialidade;
 
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")

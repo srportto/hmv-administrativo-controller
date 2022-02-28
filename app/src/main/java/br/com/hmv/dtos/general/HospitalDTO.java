@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 public class HospitalDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-
 	@JsonProperty("codigo_unidade")
 	private String codigoUnidade;
 

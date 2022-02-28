@@ -1,7 +1,7 @@
 package br.com.hmv.dtos.general;
 
-import br.com.hmv.models.entities.Hospital;
-import br.com.hmv.models.enums.StatusUnidadeHospitalEnum;
+import br.com.hmv.models.entities.Especialidade;
+import br.com.hmv.models.enums.StatusEspecialidadeEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,31 +14,25 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EspecialidadeDTO implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
+    private Long id;
 
-	@JsonProperty("codigo_unidade")
-	private String codigoUnidade;
+    private String nome;
 
-	@JsonProperty("nome_unidade")
-	private String nomeUnidade;
+    @JsonProperty("status")
+    private StatusEspecialidadeEnum statusEspecialidade;
 
-	private EnderecoDTO endereco;
+    private LocalDateTime dataCriacao;
 
-	@JsonProperty("status")
-	private StatusUnidadeHospitalEnum statusUnidadeHospital;
+    private LocalDateTime dataAtualizacao;
 
-	private LocalDateTime dataCriacao;
-
-	private LocalDateTime dataAtualizacao;
-
-	//? construtor diferenciado - de entity para DTO
-	public EspecialidadeDTO(Hospital entity) {
-		codigoUnidade = entity.getCodigoUnidade();
-		nomeUnidade = entity.getNomeUnidade();
-		endereco = new EnderecoDTO(entity.getEndereco());
-		statusUnidadeHospital = StatusUnidadeHospitalEnum.obterStatusUnidadeHospital(entity.getCodigoStatusUnidade());
-		dataCriacao = entity.getDataCriacao();
-		dataAtualizacao = entity.getDataAtualizacao();
-	}
+    //? construtor diferenciado - de entity para DTO
+    public EspecialidadeDTO(Especialidade entity) {
+        id = entity.getId();
+        nome = entity.getNome();
+        statusEspecialidade = StatusEspecialidadeEnum.obterStatusEspecialidade(entity.getCodigoStatusEspecialidade());
+        dataCriacao = entity.getDataCriacao();
+        dataAtualizacao = entity.getDataAtualizacao();
+    }
 }
