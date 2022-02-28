@@ -4,6 +4,7 @@ import br.com.hmv.dtos.general.EspecialidadeDTO;
 import br.com.hmv.dtos.general.HospitalDTO;
 import br.com.hmv.dtos.request.HospitalAddEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.HospitalAtualizaStatusUnidadeRequestDTO;
+import br.com.hmv.dtos.request.HospitalRemoveEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.HospitalUnidadeInsertRequestDTO;
 import br.com.hmv.dtos.responses.HospitalDefaultResponseDTO;
 import br.com.hmv.exceptions.DatabaseException;
@@ -74,7 +75,7 @@ public class HospitalService {
 
     @Transactional
     public HospitalDefaultResponseDTO addEspecialidade(String codigoUnidade, HospitalAddEspecialidadeRequestDTO dto) {
-        String logCode = "updateStatus(String, HospitalAtualizaStatusUnidadeRequestDTO)";
+        String logCode = "addEspecialidade(String, HospitalAddEspecialidadeRequestDTO)";
         logger.info("{} - solicitacao de atualizacao de status {}", logCode, dto);
 
         try {
@@ -85,6 +86,33 @@ public class HospitalService {
 
             //passa status novo
             entity.getEspecialidades().add(entityEspecialidade);
+            entity = hospitalRepository.save(entity);
+
+            logger.info("{} - atualizacao realizada com sucesso {}", logCode, entity);
+            return new HospitalDefaultResponseDTO(entity, entity.getEspecialidades());
+        } catch (EntityNotFoundException e) {
+            logger.warn("{} - recurso nao encontrado id: {} ", logCode, codigoUnidade);
+            throw new ResourceNotFoundException("Recurso nao encontrado id: " + codigoUnidade);
+
+        } catch (Exception e) {
+            logger.warn("{} - erro ao adicionar especialidade: {} ", logCode, e);
+            throw new ResourceNotFoundException("Recurso nao encontrado id: " + codigoUnidade);
+        }
+    }
+
+    @Transactional
+    public HospitalDefaultResponseDTO removeEspecialidade(String codigoUnidade, HospitalRemoveEspecialidadeRequestDTO dto) {
+        String logCode = "removeEspecialidade(String, HospitalRemoveEspecialidadeRequestDTO)";
+        logger.info("{} - solicitacao de atualizacao de status {}", logCode, dto);
+
+        try {
+            var objOptional = hospitalRepository.findHospitalsByCodigoUnidade(codigoUnidade);
+            Hospital entity = objOptional.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + codigoUnidade));
+
+            var entityEspecialidade = especialidadeRepository.getOne(dto.getIdEspecialidade());
+
+            //passa status novo
+            entity.getEspecialidades().remove(entityEspecialidade);
             entity = hospitalRepository.save(entity);
 
             logger.info("{} - atualizacao realizada com sucesso {}", logCode, entity);

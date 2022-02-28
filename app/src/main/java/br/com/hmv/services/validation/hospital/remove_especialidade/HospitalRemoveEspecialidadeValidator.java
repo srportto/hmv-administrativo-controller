@@ -1,6 +1,6 @@
-package br.com.hmv.services.validation.hospital.add_especialidade;
+package br.com.hmv.services.validation.hospital.remove_especialidade;
 
-import br.com.hmv.dtos.request.HospitalAddEspecialidadeRequestDTO;
+import br.com.hmv.dtos.request.HospitalRemoveEspecialidadeRequestDTO;
 import br.com.hmv.exceptions.FieldMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,15 +12,15 @@ import java.util.List;
 
 @AllArgsConstructor
 @Log4j2
-public class HospitalAddEspecialidadeValidator implements ConstraintValidator<HospitalAddEspecialidadeValid, HospitalAddEspecialidadeRequestDTO> {
+public class HospitalRemoveEspecialidadeValidator implements ConstraintValidator<HospitalRemoveEspecialidadeValid, HospitalRemoveEspecialidadeRequestDTO> {
 
 
     @Override
-    public void initialize(HospitalAddEspecialidadeValid ann) {
+    public void initialize(HospitalRemoveEspecialidadeValid ann) {
     }
 
     @Override
-    public boolean isValid(HospitalAddEspecialidadeRequestDTO dto, ConstraintValidatorContext context) {
+    public boolean isValid(HospitalRemoveEspecialidadeRequestDTO dto, ConstraintValidatorContext context) {
 
         List<FieldMessage> list = new ArrayList<>();
 

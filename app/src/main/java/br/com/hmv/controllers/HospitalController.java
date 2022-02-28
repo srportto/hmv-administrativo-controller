@@ -2,6 +2,7 @@ package br.com.hmv.controllers;
 
 import br.com.hmv.dtos.request.HospitalAddEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.HospitalAtualizaStatusUnidadeRequestDTO;
+import br.com.hmv.dtos.request.HospitalRemoveEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.HospitalUnidadeInsertRequestDTO;
 import br.com.hmv.dtos.responses.HospitalDefaultResponseDTO;
 import br.com.hmv.services.HospitalService;
@@ -89,11 +90,22 @@ public class HospitalController {
     }
 
     @PostMapping(value = "/{id}/especialidades")
-    public ResponseEntity<HospitalDefaultResponseDTO> addEspecialidades(@PathVariable String id, @RequestBody @Valid HospitalAddEspecialidadeRequestDTO requestDTO) {
-        String logCode = "updateStatus(String, ConvenioAtualizaStatusRequestDTO)";
+    public ResponseEntity<HospitalDefaultResponseDTO> addEspecialidade(@PathVariable String id, @RequestBody @Valid HospitalAddEspecialidadeRequestDTO requestDTO) {
+        String logCode = "addEspecialidade(String, HospitalAddEspecialidadeRequestDTO)";
         logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
 
         HospitalDefaultResponseDTO responseDTO = service.addEspecialidade(id, requestDTO);
+
+        logger.info("{} - solicitacao de atualizacao concluida com sucesso {}", logCode, requestDTO);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+
+    @DeleteMapping(value = "/{id}/especialidades")
+    public ResponseEntity<HospitalDefaultResponseDTO> removeEspecialidade(@PathVariable String id, @RequestBody @Valid HospitalRemoveEspecialidadeRequestDTO requestDTO) {
+        String logCode = "removeEspecialidade(String, HospitalRemoveEspecialidadeRequestDTO)";
+        logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
+
+        HospitalDefaultResponseDTO responseDTO = service.removeEspecialidade(id, requestDTO);
 
         logger.info("{} - solicitacao de atualizacao concluida com sucesso {}", logCode, requestDTO);
         return ResponseEntity.ok().body(responseDTO);
