@@ -57,7 +57,7 @@ public class ConvenioService {
             logger.info("{} - atualizacao realizada com sucesso {}", logCode, entity);
             return new ConvenioDefaultResponseDTO(entity);
         } catch (EntityNotFoundException e) {
-            logger.warn("{} - recurso nao encontrado id: {} ", id);
+            logger.warn("{} - recurso nao encontrado id: {} ", logCode, id);
             throw new ResourceNotFoundException("Convenio nao encontrado id: " + id);
         }
     }

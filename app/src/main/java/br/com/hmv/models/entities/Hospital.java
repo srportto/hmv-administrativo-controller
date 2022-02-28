@@ -7,17 +7,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -44,6 +38,13 @@ public class Hospital implements Serializable {
     private Endereco endereco;
 
     private Long codigoStatusUnidade;
+
+    @ManyToMany
+    @JoinTable(name = "tb_hospitais_especialidades", //nome da tabela de relacionamento do manyToMany(uma 3° tab. so pro relacionamento)
+            joinColumns = @JoinColumn(name ="hospital_id" ),
+            inverseJoinColumns = @JoinColumn(name = "especialidade_id")
+    )
+    Set<Especialidade> especialidades = new HashSet<>();
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")

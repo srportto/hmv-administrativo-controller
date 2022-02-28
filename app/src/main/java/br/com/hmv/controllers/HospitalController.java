@@ -1,5 +1,6 @@
 package br.com.hmv.controllers;
 
+import br.com.hmv.dtos.request.HospitalAddEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.HospitalAtualizaStatusUnidadeRequestDTO;
 import br.com.hmv.dtos.request.HospitalUnidadeInsertRequestDTO;
 import br.com.hmv.dtos.responses.HospitalDefaultResponseDTO;
@@ -85,5 +86,16 @@ public class HospitalController {
 
         logger.info("{} - solicitacao de delete realizada com sucesso {}", logCode, id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/{id}/especialidades")
+    public ResponseEntity<HospitalDefaultResponseDTO> addEspecialidades(@PathVariable String id, @RequestBody @Valid HospitalAddEspecialidadeRequestDTO requestDTO) {
+        String logCode = "updateStatus(String, ConvenioAtualizaStatusRequestDTO)";
+        logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
+
+        HospitalDefaultResponseDTO responseDTO = service.addEspecialidade(id, requestDTO);
+
+        logger.info("{} - solicitacao de atualizacao concluida com sucesso {}", logCode, requestDTO);
+        return ResponseEntity.ok().body(responseDTO);
     }
 }
