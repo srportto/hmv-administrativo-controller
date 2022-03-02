@@ -1,17 +1,13 @@
 package br.com.hmv.services;
 
-import br.com.hmv.dtos.general.EspecialidadeDTO;
-import br.com.hmv.dtos.general.TelefoneDTO;
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
-import br.com.hmv.models.entities.Especialidade;
 import br.com.hmv.models.entities.Funcionario;
-import br.com.hmv.models.entities.Telefone;
 import br.com.hmv.models.enums.StatusFuncionarioEnum;
+import br.com.hmv.models.mappers.EnderecoMapper;
 import br.com.hmv.models.mappers.FuncionarioMapper;
 import br.com.hmv.repositories.EspecialidadeRepository;
 import br.com.hmv.repositories.FuncionarioRepository;
-import br.com.hmv.repositories.TelefoneRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +22,7 @@ public class FuncionarioService {
     private static Logger logger = LoggerFactory.getLogger(FuncionarioService.class);
     private FuncionarioRepository funcionarioRepository;
     private EspecialidadeRepository especialidadeRepository;
-    private TelefoneRepository telefoneRepository;
+
 
     @Transactional
     public FuncionarioDefaultResponseDTO criacao(FuncionarioInsertRequestDTO dto) {
@@ -36,11 +32,10 @@ public class FuncionarioService {
         var entity = dtoToEntityOnCreate(dto);
         entity = funcionarioRepository.save(entity);
 
-        var listEspecialidades = entity.getEspecialidades();
-        var listTelefones = entity.getTelefones();
 
         logger.info("{} - Convenio incluido com sucesso {}", logCode, entity);
-        return new FuncionarioDefaultResponseDTO(entity, listEspecialidades, listTelefones);
+        return FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
+        //return new FuncionarioDefaultResponseDTO(entity, listEspecialidades, listTelefones);
     }
 
 //    @Transactional
@@ -163,7 +158,7 @@ public class FuncionarioService {
 
 
     private Funcionario dtoToEntityOnCreate(FuncionarioInsertRequestDTO dto) {
-        String logCode = "dtoToEntityOnCreate(FuncionarioDTO)";
+        String logCode = "dtoToEntityOnCreate(FuncionarioInsertRequestDTO)";
         logger.info("{} - convertendo dto de cricao para entity {}", logCode, dto);
 
         var entity = FuncionarioMapper.INSTANCE.deDtoParaFuncionario(dto);
@@ -172,17 +167,11 @@ public class FuncionarioService {
         entity.setCodigoGrupoFuncao(dto.getGrupoFuncaoFuncionario().getCodigoGrupoFuncaoFuncionario());
         entity.setCodigoStatusFuncionario(StatusFuncionarioEnum.ATIVO.getCodigoStatusFuncionario());
 
-        entity.getEspecialidades().clear();
-        for (EspecialidadeDTO dtoItem : dto.getEspecialidades()) {
-            Especialidade especialidade = especialidadeRepository.getOne(dtoItem.getId()); //instanciando uma categoria sem tocar no banco de dados, mas gera aos moldes do banco
-            entity.getEspecialidades().add(especialidade);
-        }
+        var endereco = entity.getEndereco();
+        endereco.setCodigoEndereco(UUID.randomUUID().toString());
+        entity.setEndereco(endereco);
 
-        entity.getTelefones().clear();
-        for (TelefoneDTO dtoItem : dto.getTelefones()) {
-            Telefone telefone = telefoneRepository.getOne(dtoItem.getId()); //instanciando uma categoria sem tocar no banco de dados, mas gera aos moldes do banco
-            entity.getTelefones().add(telefone);
-        }
+        entity.getEspecialidades().clear();
 
         logger.info("{} - conversao realizada com sucesso {}", logCode, entity);
         return entity;

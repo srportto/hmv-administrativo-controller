@@ -1,23 +1,24 @@
 package br.com.hmv.dtos.request;
 
+import br.com.hmv.dtos.general.FuncionarioDTO;
 import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
-import br.com.hmv.services.validation.hospital.criacao.HospitalInsertValid;
+import br.com.hmv.services.validation.funcionario.FuncionarioInsertValid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@HospitalInsertValid
-public class FuncionarioInsertRequestDTO {
+@FuncionarioInsertValid
+public class FuncionarioInsertRequestDTO{
 
     @NotBlank(message = "Campo email deve ser preenchido")
     @JsonProperty("email")
@@ -53,9 +54,7 @@ public class FuncionarioInsertRequestDTO {
     @JsonProperty("grupo_funcao")
     private GrupoFuncaoFuncionarioEnum grupoFuncaoFuncionario;
 
-    @NotNull(message = "Campo especialidades deve ser preenchido")
-    Set<EspecialidadeInsertRequestDTO> especialidades = new HashSet<>();
-
-    @NotNull(message = "Campo telefones deve ser preenchido")
-    Set<TelefoneInsertRequestDTO> telefones = new HashSet<>();
+    @NotNull(message = "Campo telefone deve ser preenchido")
+    @JsonProperty("telefone")
+    private TelefoneInsertRequestDTO telefone;
 }

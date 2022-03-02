@@ -2,7 +2,6 @@ package br.com.hmv.dtos.general;
 
 import br.com.hmv.models.entities.Especialidade;
 import br.com.hmv.models.entities.Funcionario;
-import br.com.hmv.models.entities.Telefone;
 import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
 import br.com.hmv.models.enums.StatusFuncionarioEnum;
 import br.com.hmv.models.mappers.FuncionarioMapper;
@@ -55,21 +54,19 @@ public class FuncionarioDTO implements Serializable {
     @JsonProperty("status")
     private StatusFuncionarioEnum statusFuncionario;
 
-    Set<EspecialidadeDTO> especialidades = new HashSet<>();
+    @JsonProperty("telefone")
+    private TelefoneDTO telefone;
 
-    Set<TelefoneDTO> telefones = new HashSet<>();
+    private Set<EspecialidadeDTO> especialidades = new HashSet<>();
 
     private LocalDateTime dataCriacao;
 
     private LocalDateTime dataAtualizacao;
 
-
-
     //? construtor diferenciado - de entity Hospital + set<?> da entity Especialidade
-    public FuncionarioDTO(Funcionario entity, Set<Especialidade> especialidades, Set<Telefone> telefones) {
+    public FuncionarioDTO(Funcionario entity, Set<Especialidade> especialidades) {
         var dtoDefalt = FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
 
         especialidades.forEach(especialidadeItem -> this.especialidades.add(new EspecialidadeDTO(especialidadeItem)));
-        telefones.forEach(telefoneItem -> this.telefones.add(new TelefoneDTO(telefoneItem)));
     }
 }

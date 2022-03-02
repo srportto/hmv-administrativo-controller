@@ -14,8 +14,6 @@ import java.io.Serializable;
 public class TelefoneDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-
     @JsonProperty("codigo_pais")
     private Integer codigoPais;
 
@@ -30,7 +28,6 @@ public class TelefoneDTO implements Serializable {
 
     //? construtor diferenciado - de entity para DTO
     public TelefoneDTO(Telefone entity) {
-        id = entity.getId();
         codigoPais = entity.getCodigoPais();
         codigoArea = entity.getCodigoArea();
         numero = entity.getNumero();

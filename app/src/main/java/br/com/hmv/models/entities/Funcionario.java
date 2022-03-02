@@ -62,19 +62,16 @@ public class Funcionario implements Serializable {
     @Column(name = "status", nullable = false)
     private Long codigoStatusFuncionario;
 
+    @Embedded
+    private Telefone telefone;
+
     @ManyToMany
     @JoinTable(name = "tb_funcionarios_especialidades", //nome da tabela de relacionamento do manyToMany(uma 3° tab. so pro relacionamento)
-            joinColumns = @JoinColumn(name ="funcionario_id" ),
+            joinColumns = @JoinColumn(name = "funcionario_id"),
             inverseJoinColumns = @JoinColumn(name = "especialidade_id")
     )
     Set<Especialidade> especialidades = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "tb_funcionarios_telefones", //nome da tabela de relacionamento do manyToMany(uma 3° tab. so pro relacionamento)
-            joinColumns = @JoinColumn(name ="funcionario_id" ),
-            inverseJoinColumns = @JoinColumn(name = "telefone_id")
-    )
-    Set<Telefone> telefones = new HashSet<>();
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")

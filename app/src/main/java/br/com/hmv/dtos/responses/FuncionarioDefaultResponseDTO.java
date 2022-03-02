@@ -4,12 +4,10 @@ import br.com.hmv.dtos.general.EspecialidadeDTO;
 import br.com.hmv.dtos.general.FuncionarioDTO;
 import br.com.hmv.dtos.general.TelefoneDTO;
 import br.com.hmv.dtos.request.EnderecoInsertRequestDTO;
-import br.com.hmv.models.entities.Especialidade;
-import br.com.hmv.models.entities.Funcionario;
-import br.com.hmv.models.entities.Telefone;
-import br.com.hmv.services.validation.hospital.criacao.HospitalInsertValid;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,9 +15,10 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-@HospitalInsertValid
 public class FuncionarioDefaultResponseDTO extends FuncionarioDTO {
 
     @JsonProperty("email")
@@ -43,7 +42,7 @@ public class FuncionarioDefaultResponseDTO extends FuncionarioDTO {
     @JsonProperty("data_nascimento")
     private LocalDate dataNascimento;
 
-    private EnderecoInsertRequestDTO endereco;
+    private EnderecoDefaultResponseDTO endereco;
 
     @JsonProperty("codigo_grupo_funcao")
     private Long codigoGrupoFuncao;
@@ -51,12 +50,4 @@ public class FuncionarioDefaultResponseDTO extends FuncionarioDTO {
     Set<EspecialidadeDTO> especialidades = new HashSet<>();
 
     Set<TelefoneDTO> telefones = new HashSet<>();
-
-    public FuncionarioDefaultResponseDTO(Funcionario entity) {
-        super(entity);
-    }
-
-    public FuncionarioDefaultResponseDTO(Funcionario entity, Set<Especialidade> especialidades, Set<Telefone> telefones) {
-        super(entity, especialidades, telefones);
-    }
 }
