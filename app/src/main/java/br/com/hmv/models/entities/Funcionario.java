@@ -70,7 +70,7 @@ public class Funcionario implements Serializable {
             joinColumns = @JoinColumn(name = "funcionario_id"),
             inverseJoinColumns = @JoinColumn(name = "especialidade_id")
     )
-    Set<Especialidade> especialidades = new HashSet<>();
+    private Set<Especialidade> especialidades = new HashSet<>();
 
 
     @CreationTimestamp

@@ -161,11 +161,16 @@ public class FuncionarioService {
         String logCode = "dtoToEntityOnCreate(FuncionarioInsertRequestDTO)";
         logger.info("{} - convertendo dto de cricao para entity {}", logCode, dto);
 
+        dto.setIdFuncionario(UUID.randomUUID().toString());
+        dto.set
+        dto.setGrupoFuncaoFuncionario(StatusFuncionarioEnum.ATIVO.getCodigoStatusFuncionario());
+        dto.set
+
         var entity = FuncionarioMapper.INSTANCE.deDtoParaFuncionario(dto);
 
-        entity.setIdFuncionario(UUID.randomUUID().toString());
+
         entity.setCodigoGrupoFuncao(dto.getGrupoFuncaoFuncionario().getCodigoGrupoFuncaoFuncionario());
-        entity.setCodigoStatusFuncionario(StatusFuncionarioEnum.ATIVO.getCodigoStatusFuncionario());
+        entity.setCodigoStatusFuncionario();
 
         var endereco = entity.getEndereco();
         endereco.setCodigoEndereco(UUID.randomUUID().toString());

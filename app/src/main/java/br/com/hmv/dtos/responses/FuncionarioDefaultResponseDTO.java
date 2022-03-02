@@ -1,10 +1,10 @@
 package br.com.hmv.dtos.responses;
 
 import br.com.hmv.dtos.general.EspecialidadeDTO;
-import br.com.hmv.dtos.general.FuncionarioDTO;
 import br.com.hmv.dtos.general.TelefoneDTO;
-import br.com.hmv.dtos.request.EnderecoInsertRequestDTO;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
+import br.com.hmv.models.enums.StatusFuncionarioEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,15 +16,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class FuncionarioDefaultResponseDTO extends FuncionarioDTO {
+public class FuncionarioDefaultResponseDTO {
+
+    @JsonProperty("id_funcionario")
+    private String idFuncionario;
 
     @JsonProperty("email")
     private String email;
 
-    @JsonIgnoreProperties
+    @JsonIgnore
     private String senha;
 
     @JsonProperty("cpf")
@@ -44,10 +47,13 @@ public class FuncionarioDefaultResponseDTO extends FuncionarioDTO {
 
     private EnderecoDefaultResponseDTO endereco;
 
-    @JsonProperty("codigo_grupo_funcao")
-    private Long codigoGrupoFuncao;
+    @JsonProperty("grupo_funcao")
+    private GrupoFuncaoFuncionarioEnum grupoFuncaoFuncionario;
 
-    Set<EspecialidadeDTO> especialidades = new HashSet<>();
+    @JsonProperty("status")
+    private StatusFuncionarioEnum statusFuncionario;
 
-    Set<TelefoneDTO> telefones = new HashSet<>();
+    private TelefoneDTO telefone;
+
+    private Set<EspecialidadeDTO> especialidades = new HashSet<>();
 }
