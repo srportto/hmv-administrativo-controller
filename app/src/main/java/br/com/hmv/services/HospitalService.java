@@ -1,7 +1,5 @@
 package br.com.hmv.services;
 
-import br.com.hmv.dtos.general.EspecialidadeDTO;
-import br.com.hmv.dtos.general.HospitalDTO;
 import br.com.hmv.dtos.request.HospitalAddEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.HospitalAtualizaStatusUnidadeRequestDTO;
 import br.com.hmv.dtos.request.HospitalRemoveEspecialidadeRequestDTO;
@@ -10,7 +8,6 @@ import br.com.hmv.dtos.responses.HospitalDefaultResponseDTO;
 import br.com.hmv.exceptions.DatabaseException;
 import br.com.hmv.exceptions.ResourceNotFoundException;
 import br.com.hmv.models.entities.Endereco;
-import br.com.hmv.models.entities.Especialidade;
 import br.com.hmv.models.entities.Hospital;
 import br.com.hmv.models.enums.StatusUnidadeHospitalEnum;
 import br.com.hmv.repositories.EnderecoRepository;
@@ -170,7 +167,7 @@ public class HospitalService {
     }
 
 
-    private void dtoToEntityOnCreate(HospitalDTO dto, Hospital entity) {
+    private void dtoToEntityOnCreate(HospitalUnidadeInsertRequestDTO dto, Hospital entity) {
         String logCode = "dtoToEntityOnCreate(HospitalDTO , Hospital)";
         logger.info("{} - convertendo dto de cricao para entity {}", logCode, dto);
 
@@ -189,12 +186,7 @@ public class HospitalService {
         endereco.setUf(dto.getEndereco().getUf());
         endereco.setCep(dto.getEndereco().getCep());
         entity.setEndereco(endereco);
-
         entity.getEspecialidades().clear();
-        for (EspecialidadeDTO dtoItem : dto.getEspecialidades()) {
-            Especialidade especialidade = especialidadeRepository.getOne(dtoItem.getId()); //instanciando uma categoria sem tocar no banco de dados, mas gera aos moldes do banco
-            entity.getEspecialidades().add(especialidade);
-        }
 
         logger.info("{} - conversao realizada com sucesso {}", logCode, entity);
     }

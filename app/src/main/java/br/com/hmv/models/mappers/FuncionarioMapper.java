@@ -6,10 +6,9 @@ import br.com.hmv.models.entities.Funcionario;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(config = MapperConfig.class, componentModel = "spring")
 public interface FuncionarioMapper {
     FuncionarioMapper INSTANCE = Mappers.getMapper(FuncionarioMapper.class);
-
 
     Funcionario deDtoParaFuncionario(FuncionarioInsertRequestDTO dto);
 

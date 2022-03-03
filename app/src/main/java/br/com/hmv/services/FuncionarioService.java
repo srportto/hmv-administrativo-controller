@@ -3,8 +3,8 @@ package br.com.hmv.services;
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
 import br.com.hmv.models.entities.Funcionario;
+import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
 import br.com.hmv.models.enums.StatusFuncionarioEnum;
-import br.com.hmv.models.mappers.EnderecoMapper;
 import br.com.hmv.models.mappers.FuncionarioMapper;
 import br.com.hmv.repositories.EspecialidadeRepository;
 import br.com.hmv.repositories.FuncionarioRepository;
@@ -32,10 +32,8 @@ public class FuncionarioService {
         var entity = dtoToEntityOnCreate(dto);
         entity = funcionarioRepository.save(entity);
 
-
         logger.info("{} - Convenio incluido com sucesso {}", logCode, entity);
-        return FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
-        //return new FuncionarioDefaultResponseDTO(entity, listEspecialidades, listTelefones);
+        return entityToResponseDefault(entity);
     }
 
 //    @Transactional
@@ -174,5 +172,17 @@ public class FuncionarioService {
 
         logger.info("{} - conversao realizada com sucesso {}", logCode, entity);
         return entity;
+    }
+
+    private FuncionarioDefaultResponseDTO entityToResponseDefault(Funcionario entity) {
+        String logCode = "entityToResponseDefault(Funcionario)";
+        logger.info("{} - convertendo entity para response default {}", logCode, entity);
+
+        var responseDto = FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
+        responseDto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusConvenio(entity.getCodigoStatusFuncionario()));
+        responseDto.setGrupoFuncaoFuncionario(GrupoFuncaoFuncionarioEnum.obterGrupoFuncaoFuncionario(entity.getCodigoGrupoFuncao()));
+
+        logger.info("{} - response default montado com sucesso {}", logCode, responseDto);
+        return responseDto;
     }
 }

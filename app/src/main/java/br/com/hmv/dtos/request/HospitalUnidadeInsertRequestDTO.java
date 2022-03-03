@@ -1,6 +1,5 @@
 package br.com.hmv.dtos.request;
 
-import br.com.hmv.dtos.general.HospitalDTO;
 import br.com.hmv.services.validation.hospital.criacao.HospitalInsertValid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -12,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Data
 @HospitalInsertValid
-public class HospitalUnidadeInsertRequestDTO extends HospitalDTO {
+public class HospitalUnidadeInsertRequestDTO {
 
 
     @NotBlank(message = "Campo nome_unidade deve ser preenchido")

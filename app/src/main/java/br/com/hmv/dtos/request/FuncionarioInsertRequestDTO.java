@@ -1,7 +1,6 @@
 package br.com.hmv.dtos.request;
 
 import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
-import br.com.hmv.models.enums.StatusFuncionarioEnum;
 import br.com.hmv.services.validation.funcionario.FuncionarioInsertValid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 @Data
 @FuncionarioInsertValid
 public class FuncionarioInsertRequestDTO {
-
 
     @NotBlank(message = "Campo email deve ser preenchido")
     @JsonProperty("email")
@@ -58,7 +56,4 @@ public class FuncionarioInsertRequestDTO {
     @NotNull(message = "Campo telefone deve ser preenchido")
     @JsonProperty("telefone")
     private TelefoneInsertRequestDTO telefone;
-
-    @JsonProperty("status")
-    private StatusFuncionarioEnum statusFuncionario;
 }

@@ -1,6 +1,5 @@
 package br.com.hmv.dtos.request;
 
-import br.com.hmv.dtos.general.EnderecoDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @NoArgsConstructor
 @Data
-public class EnderecoInsertRequestDTO extends EnderecoDTO {
+public class EnderecoInsertRequestDTO {
 
     @NotBlank(message = "Campo descricao deve ser preenchido")
     private String descricao;
