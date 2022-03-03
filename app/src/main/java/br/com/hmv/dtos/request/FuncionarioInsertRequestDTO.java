@@ -20,8 +20,6 @@ import java.time.LocalDate;
 @FuncionarioInsertValid
 public class FuncionarioInsertRequestDTO {
 
-    @JsonProperty("id_funcionario")
-    private String idFuncionario;
 
     @NotBlank(message = "Campo email deve ser preenchido")
     @JsonProperty("email")
