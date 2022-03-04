@@ -2,11 +2,16 @@ package br.com.hmv.controllers;
 
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
+import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
+import br.com.hmv.dtos.responses.HospitalDefaultResponseDTO;
 import br.com.hmv.services.FuncionarioService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,16 +52,16 @@ public class FuncionarioController {
 //        return ResponseEntity.ok().body(responseDTO);
 //    }
 //
-//    @GetMapping
-//    public ResponseEntity<Page<HospitalDefaultResponseDTO>> findAll(Pageable pageable) {
-//        String logCode = "findAll(Pageable)";
-//        logger.info("{} - solicitacao de consulta todos paginada {}", logCode, pageable);
-//
-//        Page<HospitalDefaultResponseDTO> responseDtoInList = service.findAllPaged(pageable);
-//
-//        logger.info("{} - solicitacao de consulta todos paginada realizada com sucesso{}", logCode, pageable);
-//        return ResponseEntity.ok().body(responseDtoInList);
-//    }
+    @GetMapping
+    public ResponseEntity<Page<FuncionarioForListResponseDTO>> findAll(Pageable pageable) {
+        String logCode = "findAll(Pageable)";
+        logger.info("{} - solicitacao de consulta todos paginada {}", logCode, pageable);
+
+        Page<FuncionarioForListResponseDTO> responseDtoInList = service.findAllPaged(pageable);
+
+        logger.info("{} - solicitacao de consulta todos paginada realizada com sucesso{}", logCode, pageable);
+        return ResponseEntity.ok().body(responseDtoInList);
+    }
 //
 //    @GetMapping(value = "/{id}")
 //    public ResponseEntity<HospitalDefaultResponseDTO> findById(@PathVariable String id) {

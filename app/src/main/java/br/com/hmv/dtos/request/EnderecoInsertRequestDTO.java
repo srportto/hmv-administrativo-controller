@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Data
@@ -15,7 +16,7 @@ public class EnderecoInsertRequestDTO {
     @NotBlank(message = "Campo logradouro deve ser preenchido")
     private String logradouro;
 
-    @NotBlank(message = "Campo numero deve ser preenchido")
+    @NotNull(message = "Campo numero deve ser preenchido")
     private Integer numero;
 
     @NotBlank(message = "Campo complemento deve ser preenchido")
@@ -27,7 +28,7 @@ public class EnderecoInsertRequestDTO {
     @NotBlank(message = "Campo UF deve ser preenchido")
     private String uf;
 
-    @NotBlank(message = "Campo CEP deve ser preenchido")
+    @NotNull(message = "Campo CEP deve ser preenchido")
     private Integer cep;
 
 }

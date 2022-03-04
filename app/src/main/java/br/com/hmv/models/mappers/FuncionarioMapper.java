@@ -2,6 +2,7 @@ package br.com.hmv.models.mappers;
 
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
+import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
 import br.com.hmv.models.entities.Funcionario;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -13,4 +14,6 @@ public interface FuncionarioMapper {
     Funcionario deDtoParaFuncionario(FuncionarioInsertRequestDTO dto);
 
     FuncionarioDefaultResponseDTO deFuncionarioParaDto(Funcionario entity);
+
+    FuncionarioForListResponseDTO deEntityParaRespresentacaoEmLista(Funcionario entity);
 }

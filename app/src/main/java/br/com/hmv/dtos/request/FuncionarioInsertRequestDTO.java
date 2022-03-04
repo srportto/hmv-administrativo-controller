@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -46,6 +47,7 @@ public class FuncionarioInsertRequestDTO {
     @JsonProperty("data_nascimento")
     private LocalDate dataNascimento;
 
+    @Valid
     @NotNull(message = "endereco deve ser preenchido")
     private EnderecoInsertRequestDTO endereco;
 

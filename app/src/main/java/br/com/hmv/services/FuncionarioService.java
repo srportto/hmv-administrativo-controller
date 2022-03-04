@@ -2,6 +2,7 @@ package br.com.hmv.services;
 
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
+import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
 import br.com.hmv.models.entities.Funcionario;
 import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
 import br.com.hmv.models.enums.StatusFuncionarioEnum;
@@ -11,6 +12,8 @@ import br.com.hmv.repositories.FuncionarioRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -131,15 +134,15 @@ public class FuncionarioService {
 //        }
 //    }
 
-//    @Transactional(readOnly = true)
-//    public Page<HospitalDefaultResponseDTO> findAllPaged(Pageable pageable) {
-//        String logCode = "findAllPaged(Pageable)";
-//        logger.info("{} - consulta paginada de recursos vide parametros {}", logCode, pageable);
-//
-//        Page<Hospital> list = hospitalRepository.findAll(pageable);
-//        logger.info("{} - consulta paginada de recursos realizada com sucesso: {}", logCode, list);
-//        return list.map(itemHospitalEntity -> new HospitalDefaultResponseDTO(itemHospitalEntity));
-//    }
+    @Transactional(readOnly = true)
+    public Page<FuncionarioForListResponseDTO> findAllPaged(Pageable pageable) {
+        String logCode = "findAllPaged(Pageable)";
+        logger.info("{} - consulta paginada de recursos vide parametros {}", logCode, pageable);
+
+        Page<Funcionario> list = funcionarioRepository.findAll(pageable);
+        logger.info("{} - consulta paginada de recursos realizada com sucesso: {}", logCode, list);
+        return list.map(itemFuncionarioEntity -> FuncionarioMapper.INSTANCE.deEntityParaRespresentacaoEmLista(itemFuncionarioEntity));
+    }
 //
 //    @Transactional(readOnly = true)
 //    public HospitalDefaultResponseDTO findByIdCodigoUnidade(String codigoUnidade) {
