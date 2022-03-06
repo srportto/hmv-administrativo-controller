@@ -1,4 +1,4 @@
-package br.com.hmv.services.validation.funcionario;
+package br.com.hmv.services.validation.funcionario.criacao;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

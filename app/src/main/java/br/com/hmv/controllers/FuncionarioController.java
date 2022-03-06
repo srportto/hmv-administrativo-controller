@@ -1,9 +1,9 @@
 package br.com.hmv.controllers;
 
+import br.com.hmv.dtos.request.FuncionarioAddEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
 import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
-import br.com.hmv.dtos.responses.HospitalDefaultResponseDTO;
 import br.com.hmv.services.FuncionarioService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ public class FuncionarioController {
         return ResponseEntity.created(uri).body(responseDTO);
     }
 
-//    @PatchMapping(value = "/{id}/status")
+    //    @PatchMapping(value = "/{id}/status")
 //    public ResponseEntity<HospitalDefaultResponseDTO> updateStatus(@PathVariable String id, @RequestBody @Valid HospitalAtualizaStatusUnidadeRequestDTO requestDTO) {
 //        String logCode = "updateStatus(String, ConvenioAtualizaStatusRequestDTO)";
 //        logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
@@ -62,18 +63,19 @@ public class FuncionarioController {
         logger.info("{} - solicitacao de consulta todos paginada realizada com sucesso{}", logCode, pageable);
         return ResponseEntity.ok().body(responseDtoInList);
     }
-//
-//    @GetMapping(value = "/{id}")
-//    public ResponseEntity<HospitalDefaultResponseDTO> findById(@PathVariable String id) {
-//        String logCode = "findById(String)";
-//        logger.info("{} - solicitacao de consulta detalhe {}", logCode, id);
-//
-//        HospitalDefaultResponseDTO responseDTO = service.findByIdCodigoUnidade(id);
-//
-//        logger.info("{} - solicitacao de consulta detalhe realizada com sucesso {}", logCode, responseDTO);
-//        return ResponseEntity.ok().body(responseDTO);
-//    }
-//
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<FuncionarioDefaultResponseDTO> findById(@PathVariable String id) {
+        String logCode = "findById(String)";
+        logger.info("{} - solicitacao de consulta detalhe {}", logCode, id);
+
+        FuncionarioDefaultResponseDTO responseDTO = service.findByIdFuncionario(id);
+
+        logger.info("{} - solicitacao de consulta detalhe realizada com sucesso {}", logCode, responseDTO);
+        return ResponseEntity.ok().body(responseDTO);
+    }
+
+    //
 //    @DeleteMapping(value = "/{id}")
 //    public ResponseEntity<Void> delete(@PathVariable String id) {
 //        String logCode = "delete(String)";
@@ -85,16 +87,16 @@ public class FuncionarioController {
 //        return ResponseEntity.noContent().build();
 //    }
 //
-//    @PostMapping(value = "/{id}/especialidades")
-//    public ResponseEntity<HospitalDefaultResponseDTO> addEspecialidade(@PathVariable String id, @RequestBody @Valid HospitalAddEspecialidadeRequestDTO requestDTO) {
-//        String logCode = "addEspecialidade(String, HospitalAddEspecialidadeRequestDTO)";
-//        logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
-//
-//        HospitalDefaultResponseDTO responseDTO = service.addEspecialidade(id, requestDTO);
-//
-//        logger.info("{} - solicitacao de atualizacao concluida com sucesso {}", logCode, requestDTO);
-//        return ResponseEntity.ok().body(responseDTO);
-//    }
+    @PostMapping(value = "/{id}/especialidades")
+    public ResponseEntity<FuncionarioDefaultResponseDTO> addEspecialidade(@PathVariable String id, @RequestBody @Valid FuncionarioAddEspecialidadeRequestDTO requestDTO) {
+        String logCode = "addEspecialidade(String, FuncionarioAddEspecialidadeRequestDTO)";
+        logger.info("{} - solicitacao de adicao de especialidade {}", logCode, requestDTO);
+
+        FuncionarioDefaultResponseDTO responseDTO = service.addEspecialidade(id, requestDTO);
+
+        logger.info("{} - solicitacao de adicao de especialidade concluida com sucesso {}", logCode, requestDTO);
+        return ResponseEntity.ok().body(responseDTO);
+    }
 //
 //    @DeleteMapping(value = "/{id}/especialidades")
 //    public ResponseEntity<HospitalDefaultResponseDTO> removeEspecialidade(@PathVariable String id, @RequestBody @Valid HospitalRemoveEspecialidadeRequestDTO requestDTO) {

@@ -73,7 +73,7 @@ public class HospitalService {
     @Transactional
     public HospitalDefaultResponseDTO addEspecialidade(String codigoUnidade, HospitalAddEspecialidadeRequestDTO dto) {
         String logCode = "addEspecialidade(String, HospitalAddEspecialidadeRequestDTO)";
-        logger.info("{} - solicitacao de atualizacao de status {}", logCode, dto);
+        logger.info("{} - solicitacao de adicao de especialidade {}", logCode, dto);
 
         try {
             var objOptional = hospitalRepository.findHospitalsByCodigoUnidade(codigoUnidade);
@@ -81,11 +81,11 @@ public class HospitalService {
 
             var entityEspecialidade = especialidadeRepository.getOne(dto.getIdEspecialidade());
 
-            //passa status novo
+            //add especialidade
             entity.getEspecialidades().add(entityEspecialidade);
             entity = hospitalRepository.save(entity);
 
-            logger.info("{} - atualizacao realizada com sucesso {}", logCode, entity);
+            logger.info("{} - adicao de especialidade realizada com sucesso {}", logCode, entity);
             return new HospitalDefaultResponseDTO(entity, entity.getEspecialidades());
         } catch (EntityNotFoundException e) {
             logger.warn("{} - recurso nao encontrado id: {} ", logCode, codigoUnidade);

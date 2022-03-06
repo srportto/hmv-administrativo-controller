@@ -92,7 +92,7 @@ public class HospitalController {
     @PostMapping(value = "/{id}/especialidades")
     public ResponseEntity<HospitalDefaultResponseDTO> addEspecialidade(@PathVariable String id, @RequestBody @Valid HospitalAddEspecialidadeRequestDTO requestDTO) {
         String logCode = "addEspecialidade(String, HospitalAddEspecialidadeRequestDTO)";
-        logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
+        logger.info("{} - solicitacao de adicao de especialidade {}", logCode, requestDTO);
 
         HospitalDefaultResponseDTO responseDTO = service.addEspecialidade(id, requestDTO);
 

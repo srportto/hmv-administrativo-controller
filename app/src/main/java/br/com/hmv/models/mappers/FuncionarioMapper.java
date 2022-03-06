@@ -6,24 +6,45 @@ import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
 import br.com.hmv.models.entities.Funcionario;
 import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
 import br.com.hmv.models.enums.StatusFuncionarioEnum;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(config = MapperConfig.class, componentModel = "spring")
-public interface FuncionarioMapper {
-    FuncionarioMapper INSTANCE = Mappers.getMapper(FuncionarioMapper.class);
+public abstract class FuncionarioMapper {
+    public static final FuncionarioMapper INSTANCE = Mappers.getMapper(FuncionarioMapper.class);
 
-    Funcionario deDtoParaFuncionario(FuncionarioInsertRequestDTO dto);
-
-    FuncionarioDefaultResponseDTO deFuncionarioParaDto(Funcionario entity);
+    public abstract Funcionario deDtoParaFuncionario(FuncionarioInsertRequestDTO dto);
 
     @BeforeMapping
-    default void preparaAntesDeMapearEntityParaListDto(Funcionario entity, @MappingTarget FuncionarioForListResponseDTO dto) {
+    protected void preparaAntesDeMapearEntityParaDtoDefault(Funcionario entity, @MappingTarget FuncionarioDefaultResponseDTO dto) {
+        var especialidades = entity.getEspecialidades();
+        especialidades.forEach(especialidadeItem -> dto.getEspecialidades().add(EspecialidadeMapper.INSTANCE.deEspecialidadeParaDto(especialidadeItem)));
+
         dto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusConvenio(entity.getCodigoStatusFuncionario()));
         dto.setGrupoFuncaoFuncionario(GrupoFuncaoFuncionarioEnum.obterGrupoFuncaoFuncionario(entity.getCodigoGrupoFuncao()));
     }
 
-    FuncionarioForListResponseDTO deEntityParaRespresentacaoEmLista(Funcionario entity);
+    public abstract FuncionarioDefaultResponseDTO deFuncionarioParaDto(Funcionario entity);
+
+
+    @AfterMapping
+    protected void ajustaDepoisDeMapearEntityParaDtoDefault(Funcionario entity, @MappingTarget FuncionarioDefaultResponseDTO dto) {
+        dto.getEspecialidades().clear();
+        var especialidades = entity.getEspecialidades();
+        especialidades.forEach(especialidadeItem -> dto.getEspecialidades().add(EspecialidadeMapper.INSTANCE.deEspecialidadeParaDto(especialidadeItem)));
+    }
+
+
+    @BeforeMapping
+    protected void preparaAntesDeMapearEntityParaListDto(Funcionario entity, @MappingTarget FuncionarioForListResponseDTO dto) {
+        dto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusConvenio(entity.getCodigoStatusFuncionario()));
+        dto.setGrupoFuncaoFuncionario(GrupoFuncaoFuncionarioEnum.obterGrupoFuncaoFuncionario(entity.getCodigoGrupoFuncao()));
+    }
+
+    public abstract FuncionarioForListResponseDTO deEntityParaRespresentacaoEmLista(Funcionario entity);
+
+
 }

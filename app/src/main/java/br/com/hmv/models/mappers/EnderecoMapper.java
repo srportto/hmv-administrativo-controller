@@ -6,7 +6,7 @@ import br.com.hmv.models.entities.Endereco;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(config = MapperConfig.class, componentModel = "spring")
 public interface EnderecoMapper {
     EnderecoMapper INSTANCE = Mappers.getMapper(EnderecoMapper.class);
 

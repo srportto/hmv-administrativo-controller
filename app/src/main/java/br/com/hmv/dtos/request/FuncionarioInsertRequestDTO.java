@@ -1,7 +1,7 @@
 package br.com.hmv.dtos.request;
 
 import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
-import br.com.hmv.services.validation.funcionario.FuncionarioInsertValid;
+import br.com.hmv.services.validation.funcionario.criacao.FuncionarioInsertValid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

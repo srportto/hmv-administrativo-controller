@@ -1,8 +1,10 @@
 package br.com.hmv.services;
 
+import br.com.hmv.dtos.request.FuncionarioAddEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
 import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
+import br.com.hmv.exceptions.ResourceNotFoundException;
 import br.com.hmv.models.entities.Funcionario;
 import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
 import br.com.hmv.models.enums.StatusFuncionarioEnum;
@@ -17,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,7 +29,6 @@ public class FuncionarioService {
     private static Logger logger = LoggerFactory.getLogger(FuncionarioService.class);
     private FuncionarioRepository funcionarioRepository;
     private EspecialidadeRepository especialidadeRepository;
-
 
     @Transactional
     public FuncionarioDefaultResponseDTO criacao(FuncionarioInsertRequestDTO dto) {
@@ -61,32 +64,33 @@ public class FuncionarioService {
 //    }
 
 
-//    @Transactional
-//    public HospitalDefaultResponseDTO addEspecialidade(String codigoUnidade, HospitalAddEspecialidadeRequestDTO dto) {
-//        String logCode = "addEspecialidade(String, HospitalAddEspecialidadeRequestDTO)";
-//        logger.info("{} - solicitacao de atualizacao de status {}", logCode, dto);
-//
-//        try {
-//            var objOptional = hospitalRepository.findHospitalsByCodigoUnidade(codigoUnidade);
-//            Hospital entity = objOptional.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + codigoUnidade));
-//
-//            var entityEspecialidade = especialidadeRepository.getOne(dto.getIdEspecialidade());
-//
-//            //passa status novo
-//            entity.getEspecialidades().add(entityEspecialidade);
-//            entity = hospitalRepository.save(entity);
-//
-//            logger.info("{} - atualizacao realizada com sucesso {}", logCode, entity);
-//            return new HospitalDefaultResponseDTO(entity, entity.getEspecialidades());
-//        } catch (EntityNotFoundException e) {
-//            logger.warn("{} - recurso nao encontrado id: {} ", logCode, codigoUnidade);
-//            throw new ResourceNotFoundException("Recurso nao encontrado id: " + codigoUnidade);
-//
-//        } catch (Exception e) {
-//            logger.warn("{} - erro ao adicionar especialidade: {} ", logCode, e);
-//            throw new ResourceNotFoundException("Recurso nao encontrado id: " + codigoUnidade);
-//        }
-//    }
+    @Transactional
+    public FuncionarioDefaultResponseDTO addEspecialidade(String idFuncionario, FuncionarioAddEspecialidadeRequestDTO dto) {
+        String logCode = "addEspecialidade(String, HospitalAddEspecialidadeRequestDTO)";
+        logger.info("{} - solicitacao de adicao de especialidade {}", logCode, dto);
+
+        try {
+            var objOptional = funcionarioRepository.findFuncionarioByIdFuncionario(idFuncionario);
+            Funcionario entity = objOptional.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + idFuncionario));
+
+            var entityEspecialidade = especialidadeRepository.getOne(dto.getIdEspecialidade());
+
+            //add especialidade
+            entity.getEspecialidades().add(entityEspecialidade);
+            entity = funcionarioRepository.save(entity);
+
+            logger.info("{} - adicao de especialidade realizada com sucesso {}", logCode, entity);
+            return FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
+
+        } catch (EntityNotFoundException e) {
+            logger.warn("{} - recurso nao encontrado id: {} ", logCode, idFuncionario);
+            throw new ResourceNotFoundException("Recurso nao encontrado id: " + idFuncionario);
+
+        } catch (Exception e) {
+            logger.warn("{} - erro ao adicionar especialidade: {} ", logCode, e);
+            throw new ResourceNotFoundException("Recurso nao encontrado id: " + idFuncionario);
+        }
+    }
 
 //    @Transactional
 //    public HospitalDefaultResponseDTO removeEspecialidade(String codigoUnidade, HospitalRemoveEspecialidadeRequestDTO dto) {
@@ -143,19 +147,18 @@ public class FuncionarioService {
         logger.info("{} - consulta paginada de recursos realizada com sucesso: {}", logCode, list);
         return list.map(itemFuncionarioEntity -> FuncionarioMapper.INSTANCE.deEntityParaRespresentacaoEmLista(itemFuncionarioEntity));
     }
-//
-//    @Transactional(readOnly = true)
-//    public HospitalDefaultResponseDTO findByIdCodigoUnidade(String codigoUnidade) {
-//        String logCode = "findById(String)";
-//        logger.info("{} - buscando recurso pelo id: {}", logCode, codigoUnidade);
-//
-//        Optional<Hospital> obj = hospitalRepository.findHospitalsByCodigoUnidade(codigoUnidade);
-//        Hospital entity = obj.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + codigoUnidade));
-//
-//        logger.info("{} - recurso encontrado: {}", logCode, entity);
-//        var especialidades = entity.getEspecialidades();
-//        return new HospitalDefaultResponseDTO(entity, especialidades);
-//    }
+
+    @Transactional(readOnly = true)
+    public FuncionarioDefaultResponseDTO findByIdFuncionario(String idFuncionario) {
+        String logCode = "findByIdFuncionario(String)";
+        logger.info("{} - buscando recurso pelo id: {}", logCode, idFuncionario);
+
+        Optional<Funcionario> obj = funcionarioRepository.findFuncionarioByIdFuncionario(idFuncionario);
+        Funcionario entity = obj.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + idFuncionario));
+
+        logger.info("{} - recurso encontrado: {}", logCode, entity);
+        return FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
+    }
 
 
     private Funcionario dtoToEntityOnCreate(FuncionarioInsertRequestDTO dto) {
