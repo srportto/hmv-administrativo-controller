@@ -103,11 +103,11 @@ public class HospitalController {
     @DeleteMapping(value = "/{id}/especialidades")
     public ResponseEntity<HospitalDefaultResponseDTO> removeEspecialidade(@PathVariable String id, @RequestBody @Valid HospitalRemoveEspecialidadeRequestDTO requestDTO) {
         String logCode = "removeEspecialidade(String, HospitalRemoveEspecialidadeRequestDTO)";
-        logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
+        logger.info("{} - solicitacao de remocao de especialidade {}", logCode, requestDTO);
 
         HospitalDefaultResponseDTO responseDTO = service.removeEspecialidade(id, requestDTO);
 
-        logger.info("{} - solicitacao de atualizacao concluida com sucesso {}", logCode, requestDTO);
+        logger.info("{} - solicitacao de remocao de especialidade concluida com sucesso {}", logCode, requestDTO);
         return ResponseEntity.ok().body(responseDTO);
     }
 }

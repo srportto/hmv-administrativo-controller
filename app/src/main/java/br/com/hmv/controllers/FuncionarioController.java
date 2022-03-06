@@ -2,6 +2,7 @@ package br.com.hmv.controllers;
 
 import br.com.hmv.dtos.request.FuncionarioAddEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
+import br.com.hmv.dtos.request.FuncionarioRemoveEspecialidadeRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
 import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
 import br.com.hmv.services.FuncionarioService;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -97,15 +99,15 @@ public class FuncionarioController {
         logger.info("{} - solicitacao de adicao de especialidade concluida com sucesso {}", logCode, requestDTO);
         return ResponseEntity.ok().body(responseDTO);
     }
-//
-//    @DeleteMapping(value = "/{id}/especialidades")
-//    public ResponseEntity<HospitalDefaultResponseDTO> removeEspecialidade(@PathVariable String id, @RequestBody @Valid HospitalRemoveEspecialidadeRequestDTO requestDTO) {
-//        String logCode = "removeEspecialidade(String, HospitalRemoveEspecialidadeRequestDTO)";
-//        logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
-//
-//        HospitalDefaultResponseDTO responseDTO = service.removeEspecialidade(id, requestDTO);
-//
-//        logger.info("{} - solicitacao de atualizacao concluida com sucesso {}", logCode, requestDTO);
-//        return ResponseEntity.ok().body(responseDTO);
-//    }
+
+    @DeleteMapping(value = "/{id}/especialidades")
+    public ResponseEntity<FuncionarioDefaultResponseDTO> removeEspecialidade(@PathVariable String id, @RequestBody @Valid FuncionarioRemoveEspecialidadeRequestDTO requestDTO) {
+        String logCode = "removeEspecialidade(String, FuncionarioRemoveEspecialidadeRequestDTO)";
+        logger.info("{} - solicitacao de remocao de especialidade {}", logCode, requestDTO);
+
+        FuncionarioDefaultResponseDTO responseDTO = service.removeEspecialidade(id, requestDTO);
+
+        logger.info("{} - solicitacao de remocao de especialidade concluida com sucesso {}", logCode, requestDTO);
+        return ResponseEntity.ok().body(responseDTO);
+    }
 }

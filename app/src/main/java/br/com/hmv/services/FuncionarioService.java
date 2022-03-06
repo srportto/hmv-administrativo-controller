@@ -2,6 +2,7 @@ package br.com.hmv.services;
 
 import br.com.hmv.dtos.request.FuncionarioAddEspecialidadeRequestDTO;
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
+import br.com.hmv.dtos.request.FuncionarioRemoveEspecialidadeRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
 import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
 import br.com.hmv.exceptions.ResourceNotFoundException;
@@ -92,32 +93,32 @@ public class FuncionarioService {
         }
     }
 
-//    @Transactional
-//    public HospitalDefaultResponseDTO removeEspecialidade(String codigoUnidade, HospitalRemoveEspecialidadeRequestDTO dto) {
-//        String logCode = "removeEspecialidade(String, HospitalRemoveEspecialidadeRequestDTO)";
-//        logger.info("{} - solicitacao de atualizacao de status {}", logCode, dto);
-//
-//        try {
-//            var objOptional = hospitalRepository.findHospitalsByCodigoUnidade(codigoUnidade);
-//            Hospital entity = objOptional.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + codigoUnidade));
-//
-//            var entityEspecialidade = especialidadeRepository.getOne(dto.getIdEspecialidade());
-//
-//            //passa status novo
-//            entity.getEspecialidades().remove(entityEspecialidade);
-//            entity = hospitalRepository.save(entity);
-//
-//            logger.info("{} - atualizacao realizada com sucesso {}", logCode, entity);
-//            return new HospitalDefaultResponseDTO(entity, entity.getEspecialidades());
-//        } catch (EntityNotFoundException e) {
-//            logger.warn("{} - recurso nao encontrado id: {} ", logCode, codigoUnidade);
-//            throw new ResourceNotFoundException("Recurso nao encontrado id: " + codigoUnidade);
-//
-//        } catch (Exception e) {
-//            logger.warn("{} - erro ao adicionar especialidade: {} ", logCode, e);
-//            throw new ResourceNotFoundException("Recurso nao encontrado id: " + codigoUnidade);
-//        }
-//    }
+    @Transactional
+    public FuncionarioDefaultResponseDTO removeEspecialidade(String idFuncionario, FuncionarioRemoveEspecialidadeRequestDTO dto) {
+        String logCode = "removeEspecialidade(String, FuncionarioRemoveEspecialidadeRequestDTO)";
+        logger.info("{} - solicitacao de remocao de especialidade {}", logCode, dto);
+
+        try {
+            var objOptional = funcionarioRepository.findFuncionarioByIdFuncionario(idFuncionario);
+            Funcionario entity = objOptional.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + idFuncionario));
+
+            var entityEspecialidade = especialidadeRepository.getOne(dto.getIdEspecialidade());
+
+            //remove especialidade
+            entity.getEspecialidades().remove(entityEspecialidade);
+            entity = funcionarioRepository.save(entity);
+
+            logger.info("{} - solicitacao de remocao de especialidade concluida com sucesso {}", logCode, entity);
+            return FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
+        } catch (EntityNotFoundException e) {
+            logger.warn("{} - recurso nao encontrado id: {} ", logCode, idFuncionario);
+            throw new ResourceNotFoundException("Recurso nao encontrado id: " + idFuncionario);
+
+        } catch (Exception e) {
+            logger.warn("{} - erro ao adicionar especialidade: {} ", logCode, e);
+            throw new ResourceNotFoundException("Recurso nao encontrado id: " + idFuncionario);
+        }
+    }
 
 //    @Transactional
 //    public void delete(String codigoUnidade) {
