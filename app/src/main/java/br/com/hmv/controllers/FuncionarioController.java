@@ -6,6 +6,7 @@ import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.request.FuncionarioRemoveEspecialidadeRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
 import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
+import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
 import br.com.hmv.services.FuncionarioService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -60,6 +62,17 @@ public class FuncionarioController {
 
     @GetMapping
     public ResponseEntity<Page<FuncionarioForListResponseDTO>> findAll(Pageable pageable) {
+        String logCode = "findAll(Pageable)";
+        logger.info("{} - solicitacao de consulta todos paginada {}", logCode, pageable);
+
+        Page<FuncionarioForListResponseDTO> responseDtoInList = service.findAllPaged(pageable);
+
+        logger.info("{} - solicitacao de consulta todos paginada realizada com sucesso{}", logCode, pageable);
+        return ResponseEntity.ok().body(responseDtoInList);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<FuncionarioForListResponseDTO>> findAllByGrupoFuncao(@RequestParam(defaultValue = "MEDICO") GrupoFuncaoFuncionarioEnum grupoFuncao, Pageable pageable) {
         String logCode = "findAll(Pageable)";
         logger.info("{} - solicitacao de consulta todos paginada {}", logCode, pageable);
 
