@@ -14,7 +14,7 @@ public enum StatusFuncionarioEnum {
         return this.codigoStatus;
     }
 
-    public static StatusFuncionarioEnum obterStatusConvenio(long codigoStatusFuncionario) {
+    public static StatusFuncionarioEnum obterStatusFuncionario(long codigoStatusFuncionario) {
         for (StatusFuncionarioEnum status : StatusFuncionarioEnum.values()) {
             if (status.getCodigoStatusFuncionario() == codigoStatusFuncionario) {
                 return status;

@@ -23,7 +23,7 @@ public abstract class FuncionarioMapper {
         var especialidades = entity.getEspecialidades();
         especialidades.forEach(especialidadeItem -> dto.getEspecialidades().add(EspecialidadeMapper.INSTANCE.deEspecialidadeParaDto(especialidadeItem)));
 
-        dto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusConvenio(entity.getCodigoStatusFuncionario()));
+        dto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusFuncionario(entity.getCodigoStatusFuncionario()));
         dto.setGrupoFuncaoFuncionario(GrupoFuncaoFuncionarioEnum.obterGrupoFuncaoFuncionario(entity.getCodigoGrupoFuncao()));
     }
 
@@ -40,11 +40,9 @@ public abstract class FuncionarioMapper {
 
     @BeforeMapping
     protected void preparaAntesDeMapearEntityParaListDto(Funcionario entity, @MappingTarget FuncionarioForListResponseDTO dto) {
-        dto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusConvenio(entity.getCodigoStatusFuncionario()));
+        dto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusFuncionario(entity.getCodigoStatusFuncionario()));
         dto.setGrupoFuncaoFuncionario(GrupoFuncaoFuncionarioEnum.obterGrupoFuncaoFuncionario(entity.getCodigoGrupoFuncao()));
     }
 
     public abstract FuncionarioForListResponseDTO deEntityParaRespresentacaoEmLista(Funcionario entity);
-
-
 }

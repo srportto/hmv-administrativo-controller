@@ -47,7 +47,7 @@ public class HospitalController {
 
     @PatchMapping(value = "/{id}/status")
     public ResponseEntity<HospitalDefaultResponseDTO> updateStatus(@PathVariable String id, @RequestBody @Valid HospitalAtualizaStatusUnidadeRequestDTO requestDTO) {
-        String logCode = "updateStatus(String, ConvenioAtualizaStatusRequestDTO)";
+        String logCode = "updateStatus(String, HospitalAtualizaStatusUnidadeRequestDTO)";
         logger.info("{} - solicitacao de atualizacao de status {}", logCode, requestDTO);
 
         HospitalDefaultResponseDTO responseDTO = service.updateStatus(id, requestDTO);

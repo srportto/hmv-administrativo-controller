@@ -1,10 +1,12 @@
 package br.com.hmv.services;
 
 import br.com.hmv.dtos.request.FuncionarioAddEspecialidadeRequestDTO;
+import br.com.hmv.dtos.request.FuncionarioAtualizaStatusRequestDTO;
 import br.com.hmv.dtos.request.FuncionarioInsertRequestDTO;
 import br.com.hmv.dtos.request.FuncionarioRemoveEspecialidadeRequestDTO;
 import br.com.hmv.dtos.responses.FuncionarioDefaultResponseDTO;
 import br.com.hmv.dtos.responses.FuncionarioForListResponseDTO;
+import br.com.hmv.exceptions.DatabaseException;
 import br.com.hmv.exceptions.ResourceNotFoundException;
 import br.com.hmv.models.entities.Funcionario;
 import br.com.hmv.models.enums.GrupoFuncaoFuncionarioEnum;
@@ -15,6 +17,8 @@ import br.com.hmv.repositories.FuncionarioRepository;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -43,27 +47,27 @@ public class FuncionarioService {
         return entityToResponseDefault(entity);
     }
 
-//    @Transactional
-//    public HospitalDefaultResponseDTO updateStatus(String codigoUnidade, HospitalAtualizaStatusUnidadeRequestDTO dto) {
-//        String logCode = "updateStatus(String, HospitalAtualizaStatusUnidadeRequestDTO)";
-//        logger.info("{} - solicitacao de atualizacao de status {}", logCode, dto);
-//
-//        try {
-//            var objOptional = hospitalRepository.findHospitalsByCodigoUnidade(codigoUnidade);
-//            Hospital entity = objOptional.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + codigoUnidade));
-//
-//            //passa status novo
-//            entity.setCodigoStatusUnidade(dto.getStatusUnidadeHospitalEnum().getCodigoStatusHospitalUnidade());
-//            entity = hospitalRepository.save(entity);
-//
-//            logger.info("{} - atualizacao realizada com sucesso {}", logCode, entity);
-//            return new HospitalDefaultResponseDTO(entity);
-//        } catch (EntityNotFoundException e) {
-//            logger.warn("{} - recurso nao encontrado id: {} ", codigoUnidade);
-//            throw new ResourceNotFoundException("Recurso nao encontrado id: " + codigoUnidade);
-//        }
-//    }
+    @Transactional
+    public FuncionarioDefaultResponseDTO updateStatus(String idFuncionario, FuncionarioAtualizaStatusRequestDTO dto) {
+        String logCode = "updateStatus(String, FuncionarioAtualizaStatusRequestDTO)";
+        logger.info("{} - solicitacao de atualizacao de status {}", logCode, dto);
 
+        try {
+            var objOptional = funcionarioRepository.findFuncionarioByIdFuncionario(idFuncionario);
+            Funcionario entity = objOptional.orElseThrow(() -> new ResourceNotFoundException("recurso nao encontrado id: " + idFuncionario));
+
+            //passa status novo
+            entity.setCodigoStatusFuncionario(dto.getStatusFuncionario().getCodigoStatusFuncionario());
+            entity = funcionarioRepository.save(entity);
+
+            logger.info("{} - atualizacao realizada com sucesso {}", logCode, entity);
+            return FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
+
+        } catch (EntityNotFoundException e) {
+            logger.warn("{} - recurso nao encontrado id: {} ", idFuncionario);
+            throw new ResourceNotFoundException("Recurso nao encontrado id: " + idFuncionario);
+        }
+    }
 
     @Transactional
     public FuncionarioDefaultResponseDTO addEspecialidade(String idFuncionario, FuncionarioAddEspecialidadeRequestDTO dto) {
@@ -120,24 +124,24 @@ public class FuncionarioService {
         }
     }
 
-//    @Transactional
-//    public void delete(String codigoUnidade) {
-//        String logCode = "delete(String)";
-//        logger.info("{} - deletando recurso: {}", logCode, codigoUnidade);
-//
-//        try {
-//            hospitalRepository.deleteByCodigoUnidade(codigoUnidade);
-//            logger.info("{} - recurso deletado com sucesso: {}", logCode, codigoUnidade);
-//
-//        } catch (EmptyResultDataAccessException e) {
-//            logger.warn("{} - recurso nao encontrado: {}", logCode, codigoUnidade);
-//            throw new ResourceNotFoundException("Recurso nao encontrado id: " + codigoUnidade);
-//
-//        } catch (DataIntegrityViolationException e) {
-//            logger.warn("{} - erro de integridade de dados: {}", logCode, codigoUnidade);
-//            throw new DatabaseException("Integrity violation - Ao deletar convenio id: " + codigoUnidade);
-//        }
-//    }
+    @Transactional
+    public void delete(String idFuncionario) {
+        String logCode = "delete(String)";
+        logger.info("{} - deletando recurso: {}", logCode, idFuncionario);
+
+        try {
+            funcionarioRepository.deleteByIdFuncionario(idFuncionario);
+            logger.info("{} - recurso deletado com sucesso: {}", logCode, idFuncionario);
+
+        } catch (EmptyResultDataAccessException e) {
+            logger.warn("{} - recurso nao encontrado: {}", logCode, idFuncionario);
+            throw new ResourceNotFoundException("Recurso nao encontrado id: " + idFuncionario);
+
+        } catch (DataIntegrityViolationException e) {
+            logger.warn("{} - erro de integridade de dados: {}", logCode, idFuncionario);
+            throw new DatabaseException("Integrity violation - Ao deletar convenio id: " + idFuncionario);
+        }
+    }
 
     @Transactional(readOnly = true)
     public Page<FuncionarioForListResponseDTO> findAllPaged(Pageable pageable) {
@@ -186,7 +190,7 @@ public class FuncionarioService {
         logger.info("{} - convertendo entity para response default {}", logCode, entity);
 
         var responseDto = FuncionarioMapper.INSTANCE.deFuncionarioParaDto(entity);
-        responseDto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusConvenio(entity.getCodigoStatusFuncionario()));
+        responseDto.setStatusFuncionario(StatusFuncionarioEnum.obterStatusFuncionario(entity.getCodigoStatusFuncionario()));
         responseDto.setGrupoFuncaoFuncionario(GrupoFuncaoFuncionarioEnum.obterGrupoFuncaoFuncionario(entity.getCodigoGrupoFuncao()));
 
         logger.info("{} - response default montado com sucesso {}", logCode, responseDto);
