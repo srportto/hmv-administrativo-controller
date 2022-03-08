@@ -48,7 +48,7 @@ public class FuncionarioController {
         return ResponseEntity.created(uri).body(responseDTO);
     }
 
-    //todo - fazendo controller
+
     @PatchMapping(value = "/{id}/status")
     public ResponseEntity<FuncionarioDefaultResponseDTO> updateStatus(@PathVariable String id, @RequestBody @Valid FuncionarioAtualizaStatusRequestDTO requestDTO) {
         String logCode = "updateStatus(String, FuncionarioAtualizaStatusRequestDTO)";
@@ -71,12 +71,12 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(responseDtoInList);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<FuncionarioForListResponseDTO>> findAllByGrupoFuncao(@RequestParam(defaultValue = "MEDICO") GrupoFuncaoFuncionarioEnum grupoFuncao, Pageable pageable) {
-        String logCode = "findAll(Pageable)";
-        logger.info("{} - solicitacao de consulta todos paginada {}", logCode, pageable);
+    @GetMapping(value = "/grupo-funcao")
+    public ResponseEntity<Page<FuncionarioForListResponseDTO>> findAllByGrupoFuncao(@RequestParam GrupoFuncaoFuncionarioEnum grupo, Pageable pageable) {
+        String logCode = "findAllByGrupoFuncao(GrupoFuncaoFuncionarioEnum,Pageable)";
+        logger.info("{} - solicitacao de consulta todos paginada {} por grupo de funcao {}", logCode, pageable, grupo);
 
-        Page<FuncionarioForListResponseDTO> responseDtoInList = service.findAllPaged(pageable);
+        Page<FuncionarioForListResponseDTO> responseDtoInList = service.findAllPagedPorGrupoFuncao(grupo, pageable);
 
         logger.info("{} - solicitacao de consulta todos paginada realizada com sucesso{}", logCode, pageable);
         return ResponseEntity.ok().body(responseDtoInList);

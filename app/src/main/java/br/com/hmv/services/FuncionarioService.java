@@ -154,6 +154,17 @@ public class FuncionarioService {
     }
 
     @Transactional(readOnly = true)
+    public Page<FuncionarioForListResponseDTO> findAllPagedPorGrupoFuncao(GrupoFuncaoFuncionarioEnum grupoFuncao, Pageable pageable) {
+        String logCode = "findAllPagedPorGrupoFuncao(GrupoFuncaoFuncionarioEnum,Pageable)";
+        logger.info("{} - consulta paginada de recursos vide parametros {} e grupo funcao {}", logCode, pageable, grupoFuncao);
+
+        var grupoFuncaoId = grupoFuncao.getCodigoGrupoFuncaoFuncionario();
+        Page<Funcionario> list = funcionarioRepository.findFuncionarioByCodigoGrupoFuncao(grupoFuncaoId, pageable);
+        logger.info("{} - consulta paginada de recursos por grupo de funcao realizada com sucesso: {}", logCode, list);
+        return list.map(itemFuncionarioEntity -> FuncionarioMapper.INSTANCE.deEntityParaRespresentacaoEmLista(itemFuncionarioEntity));
+    }
+
+    @Transactional(readOnly = true)
     public FuncionarioDefaultResponseDTO findByIdFuncionario(String idFuncionario) {
         String logCode = "findByIdFuncionario(String)";
         logger.info("{} - buscando recurso pelo id: {}", logCode, idFuncionario);
